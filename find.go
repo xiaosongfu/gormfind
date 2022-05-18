@@ -6,8 +6,8 @@ import (
 	"gorm.io/gorm"
 )
 
-// 查询总记录数
-func count(querySeg *gorm.DB) (int64, error) {
+// Count 查询总记录数
+func Count(querySeg *gorm.DB) (int64, error) {
 	var total int64
 	if err := querySeg.Count(&total).Error; err != nil {
 		return 0, err
@@ -16,8 +16,8 @@ func count(querySeg *gorm.DB) (int64, error) {
 	return total, nil
 }
 
-// 单表单行查询
-func one[T any](querySeg *gorm.DB) (*T, error) {
+// One 单表单行查询
+func One[T any](querySeg *gorm.DB) (*T, error) {
 	var d T
 	tx := querySeg.First(&d)
 
@@ -31,9 +31,9 @@ func one[T any](querySeg *gorm.DB) (*T, error) {
 	return &d, nil
 }
 
-// 单表多行查询
+// Rows 单表多行查询
 // 1. 范型 T 是查询结果的类型，不是某张表的类型
-func rows[T any](querySeg *gorm.DB, page *Page) ([]*T, error) {
+func Rows[T any](querySeg *gorm.DB, page *Page) ([]*T, error) {
 	if page != nil {
 		// 拼接 ORDER BY
 		if page.SortField != nil && page.Order != nil {
@@ -53,10 +53,10 @@ func rows[T any](querySeg *gorm.DB, page *Page) ([]*T, error) {
 	return d, nil
 }
 
-// 多表联接多行查询
+// RowsJoin 多表联接多行查询
 // 1. 范型 T 是查询结果的类型，不是某张表的类型
 // 2. sortTableName 是 [排序] 条件所属的表
-func rowsJoin[T any](querySeg *gorm.DB, sortTableName string, page *Page) ([]*T, error) {
+func RowsJoin[T any](querySeg *gorm.DB, sortTableName string, page *Page) ([]*T, error) {
 	if page != nil {
 		// 拼接 ORDER BY
 		if page.SortField != nil && page.Order != nil {
